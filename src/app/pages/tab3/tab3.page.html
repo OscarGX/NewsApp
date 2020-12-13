@@ -1,0 +1,16 @@
+<ion-header [translucent]="false" color="dark">
+    <ion-toolbar color="dark">
+        <ion-title>
+            Favorites
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark">
+    <ion-toolbar color="dark" *ngIf="newsStorageService.news.length === 0">
+        <ion-title class="ion-text-center">
+            No news, try adding one!
+        </ion-title>
+    </ion-toolbar>
+    <app-noticias *ngIf="newsStorageService.news.length > 0" [news]="newsStorageService.news" [favoritePage]="true"></app-noticias>
+</ion-content>

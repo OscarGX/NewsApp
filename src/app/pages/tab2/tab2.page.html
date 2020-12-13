@@ -1,0 +1,38 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar color="dark">
+        <ion-title>
+            Encabezados
+        </ion-title>
+    </ion-toolbar>
+    <ion-segment scrollable mode="md" color="primary" (ionChange)="onSegmentChange($event)">
+        <ion-segment-button value="business" mode="md">
+            <ion-label>Business</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="entertainment" mode="md">
+            <ion-label>Entertainment</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="general" mode="md">
+            <ion-label>General</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="health" mode="md">
+            <ion-label>Health</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="science" mode="md">
+            <ion-label>Science</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="sports" mode="md">
+            <ion-label>Sports</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="technology" mode="md">
+            <ion-label>Technology</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark">
+    <app-noticias [news]="news"></app-noticias>
+    <ion-infinite-scroll threshold="150px" position="bottom" (ionInfinite)="loadNewData($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more news...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
