@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Article } from '../../models/interfaces/news.interface';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, Platform, ToastController } from '@ionic/angular';
 import { NewsStorageService } from '../../services/news-storage.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class NoticiaComponent implements OnInit {
   @Input() favoritePage: boolean;
 
   constructor(private iab: InAppBrowser, private actionSheetCtrl: ActionSheetController, private socialSharing: SocialSharing,
-              private newStorageService: NewsStorageService) { }
+              private newStorageService: NewsStorageService, private platform: Platform) { }
 
   ngOnInit() {
   }
@@ -55,8 +55,7 @@ export class NoticiaComponent implements OnInit {
         icon: 'share',
         cssClass: 'action-dark',
         handler: () => {
-          console.log('Share clicked');
-          this.socialSharing.share(this.notice.title, this.notice.source.name, '', this.notice.url);
+          this.shareNew();
         }
       },
       btnFavoriteHandler,
@@ -66,10 +65,23 @@ export class NoticiaComponent implements OnInit {
         role: 'cancel',
         cssClass: 'action-dark',
         handler: () => {
-          console.log('Cancel clicked');
         }}]
     });
     await actionSheet.present();
+  }
+
+  private shareNew(): void {
+    if (this.platform.is('cordova')) {
+      this.socialSharing.share(this.notice.title, this.notice.source.name, '', this.notice.url);
+    } else if (navigator.share) {
+      navigator.share({
+        title: this.notice.title,
+        text: this.notice.description,
+        url: this.notice.url
+      });
+    } else {
+      this.newStorageService.presentToast('Share tool is not supported.');
+    }
   }
 
 }
